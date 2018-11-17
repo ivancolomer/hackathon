@@ -24,6 +24,14 @@
 
         <activity android:name=".LoginAct" android:theme="@style/AppTheme.Dark"/>
 
+        <provider
+            android:name=".DbManager"
+            android:authorities="com.ibar.protectme"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
+
+
 
 </manifest>

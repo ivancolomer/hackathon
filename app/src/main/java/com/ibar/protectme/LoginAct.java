@@ -7,6 +7,7 @@ import android.util.Log;
 
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,8 +17,9 @@ import butterknife.ButterKnife;
 public class LoginAct extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private CheckBox cb;
 
-    @BindView(R.id.input_email) EditText _emailText;
+    @BindView(R.id.input_email) EditText _userIdText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
 
@@ -29,6 +31,18 @@ public class LoginAct extends AppCompatActivity {
 
         _loginButton = findViewById(R.id.btn_login);
         _loginButton.setOnClickListener(v -> login());
+
+        long userId = getIntent().getLongExtra("userId", 0);
+        if(userId != 0)
+            _userIdText.setText(String.valueOf(userId));
+
+        String password = getIntent().getStringExtra("password");
+        if(password != null)
+            _passwordText.setText(password);
+
+        Log.d("Login ", String.valueOf(userId));
+        if(userId > 0 && password != null && !password.isEmpty())
+            login();
 
     }
 
@@ -43,39 +57,27 @@ public class LoginAct extends AppCompatActivity {
         _loginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginAct.this,
-                R.style.AppTheme);
+                R.style.AppTheme_Dark);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-
         // TODO: Implement your own authentication logic here.
 
+        cb = findViewById(R.id.checkbox);
+        if(cb.isChecked()) {
+
+        }
+
         new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
-                        progressDialog.dismiss();
-                    }
+                () -> {
+                    // On complete call either onLoginSuccess or onLoginFailed
+                    onLoginSuccess();
+                    // onLoginFailed();
+                    progressDialog.dismiss();
                 }, 3000);
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-                this.finish();
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -97,14 +99,14 @@ public class LoginAct extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String email = _emailText.getText().toString();
+        long userId = Long.parseLong(_userIdText.getText().toString());
         String password = _passwordText.getText().toString();
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+        if (userId <= 0) {
+            _userIdText.setError("enter a valid user id");
             valid = false;
         } else {
-            _emailText.setError(null);
+            _userIdText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 8 || password.length() > 45) {
