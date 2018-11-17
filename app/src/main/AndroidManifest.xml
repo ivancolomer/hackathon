@@ -24,10 +24,9 @@
         <activity
             android:name=".AlertsSectionActivity"
             android:label="@string/title_activity_alerts_section"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".LoginAct" android:theme="@style/AppTheme.Dark"/>
+
     </application>
 
 </manifest>

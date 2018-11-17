@@ -16,23 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = MainActivity.this;
 
-        goToAlertsButtonListener();
-        goToLoginButtonListener();
-    }
-
-    private void goToAlertsButtonListener() {
-        Button alertsButton = findViewById(R.id.buttonToAlerts);
-        alertsButton.setOnClickListener(view -> {
-            Intent intent = new Intent(context, AlertsSectionActivity.class);
-            startActivity(intent);
-        });
-    }
-
-    private void goToLoginButtonListener() {
-        Button loginButton = findViewById(R.id.buttonLogin);
-        loginButton.setOnClickListener(view -> {
-            Intent intent = new Intent(context, LoginActivity.class);
-            startActivity(intent);
-        });
+        Intent intent = new Intent(context, LoginAct.class);
+        startActivity(intent);
     }
 }
