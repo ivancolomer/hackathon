@@ -17,12 +17,21 @@ public class MainActivity extends AppCompatActivity {
         context = MainActivity.this;
 
         goToAlertsButtonListener();
+        goToLoginButtonListener();
     }
 
     private void goToAlertsButtonListener() {
         Button alertsButton = findViewById(R.id.buttonToAlerts);
         alertsButton.setOnClickListener(view -> {
             Intent intent = new Intent(context, AlertsSectionActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void goToLoginButtonListener() {
+        Button loginButton = findViewById(R.id.buttonLogin);
+        loginButton.setOnClickListener(view -> {
+            Intent intent = new Intent(context, LoginActivity.class);
             startActivity(intent);
         });
     }
