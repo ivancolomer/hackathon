@@ -1,6 +1,7 @@
 package com.ibar.protectme;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,10 +28,18 @@ public class LoginAct extends AppCompatActivity {
         setContentView(R.layout.activity_log);
         ButterKnife.bind(this);
 
+        findViewById(R.id.next).setOnClickListener(view -> goToAlertsMenu());
+
         _loginButton = findViewById(R.id.btn_login);
         _loginButton.setOnClickListener(v -> login());
 
     }
+
+    private void goToAlertsMenu() {
+        Intent intent = new Intent(this, AlertsMenu.class);
+        startActivity(intent);
+    }
+
 
     public void login() {
         Log.d(TAG, "Login");
