@@ -6,10 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import android.content.Intent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -30,7 +28,6 @@ public class LoginAct extends AppCompatActivity {
         ButterKnife.bind(this);
 
         _loginButton = findViewById(R.id.btn_login);
-
         _loginButton.setOnClickListener(v -> login());
 
     }
@@ -110,8 +107,8 @@ public class LoginAct extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty() || password.length() < 8 || password.length() > 45) {
+            _passwordText.setError("between 8 and 45 alphanumeric characters");
             valid = false;
         } else {
             _passwordText.setError(null);
