@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 
 public class AlertsSectionActivity extends AppCompatActivity {
 
@@ -16,14 +17,17 @@ public class AlertsSectionActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    }
+        ImageButton infoButton = findViewById(R.id.infoButton);
 
+        infoButton.setOnClickListener(view -> {
+            Snackbar snackbarInfoMessage = Snackbar.make(view, "Replace with your own action\n hola\n hola\n hola\n hola", Snackbar.LENGTH_INDEFINITE);
+            snackbarInfoMessage.setAction("Dismiss", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    snackbarInfoMessage.dismiss();
+                };
+            });
+        });
+
+    }
 }
