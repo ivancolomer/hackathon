@@ -69,9 +69,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        context = LoginActivity.this;
+        goNextButtonListener();
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
+
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -83,21 +86,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
                 return false;
             }
+
         });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, AlertsSectionActivity.class);
-                startActivity(intent);
-
-                //attemptLogin();
+                attemptLogin();
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void goNextButtonListener() {
+        Button alertsButton = findViewById(R.id.next);
+        alertsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(context, AlertsSectionActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void populateAutoComplete() {
