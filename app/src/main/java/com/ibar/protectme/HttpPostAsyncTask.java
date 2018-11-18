@@ -1,8 +1,11 @@
 package com.ibar.protectme;
 
 import android.os.AsyncTask;
+import android.os.Build;
+import android.text.Html;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -17,13 +20,16 @@ import java.util.Map;
 
 public class HttpPostAsyncTask extends AsyncTask<String, Void, Void> {
 
+
         // This is the JSON body of the post
         JSONObject postData;
+        LoginAct loginact;
         // This is a constructor that allows you to pass in the JSON body
-        public HttpPostAsyncTask(Map<String, String> postData) {
+        public HttpPostAsyncTask(Map<String, String> postData, LoginAct loginact) {
             if (postData != null) {
                 this.postData = new JSONObject(postData);
             }
+            this.loginact = loginact;
         }
 
         // This is a function that we are overriding from AsyncTask. It takes Strings as parameters because that is what we defined for the parameters of our async task
@@ -32,7 +38,7 @@ public class HttpPostAsyncTask extends AsyncTask<String, Void, Void> {
 
             try {
                 // This is getting the url from the string we passed in
-                URL url = new URL(params[0]);
+                URL url = new URL("http://" + Config.SERVER_IP + "/" + params[0]);
 
                 // Create the urlConnection
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -52,22 +58,44 @@ public class HttpPostAsyncTask extends AsyncTask<String, Void, Void> {
                 }
 
                 int statusCode = urlConnection.getResponseCode();
-
+                Log.d("BRUH Status: ", String.valueOf(statusCode));
                 if (statusCode ==  200) {
 
                     InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
 
                     String response = convertInputStreamToString(inputStream);
 
-                    // From here you can convert the string to JSON with whatever JSON parser you like to use
-                    // After converting the string to JSON, I call my custom callback. You can follow this process too, or you can implement the onPostExecute(Result) method
+                    Log.d("BRUH Response: ", response);
+
+                    JSONObject json;
+
+                    if (Build.VERSION.SDK_INT >= 24)
+                    {
+                        String text = Html.fromHtml(response, Html.FROM_HTML_MODE_LEGACY).toString();
+                        json = new JSONObject(text);
+                    }
+                    else
+                    {
+                        json = new JSONObject(Html.fromHtml(response).toString());
+                    }
+
+                    if(json.has("errors")) {
+                        loginact.onLoginFailed();
+                        return null;
+
+                    }
+
+                    String sessionId = json.get("sessionid").toString();
+
+                    loginact.onLoginSuccess(sessionId);
+
                 } else {
-                    // Status code is not 200
+                    loginact.onLoginFailed();
                     // Do something to handle the error
                 }
 
             } catch (Exception e) {
-                Log.d("VRUH", e.getLocalizedMessage());
+                Log.d("BRUH", e.getLocalizedMessage());
             }
             return null;
         }

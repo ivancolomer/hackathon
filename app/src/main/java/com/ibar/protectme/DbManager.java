@@ -26,6 +26,10 @@ public class DbManager extends ContentProvider {
         Log.d("BRUH DbMan26: ", password);
         dbHelper.getReadableDatabase().execSQL(sql, new String[]{String.valueOf(userId)});
     }
+
+    public static void setNotFirstTime() {
+        dbHelper.getReadableDatabase().execSQL("UPDATE user_info SET first_time = ?", new String[]{String.valueOf(0)});
+    }
     
     @Override
     public Cursor query(@NonNull Uri uri,  String[] projection,  String selection,  String[] selectionArgs,  String sortOrder) {

@@ -12,6 +12,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.github.paolorotolo.appintro.AppIntro;
+
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -27,11 +31,20 @@ public class LoginAct extends AppCompatActivity {
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
 
+    ProgressDialog progressDialog;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
         ButterKnife.bind(this);
+
+
+        findViewById(R.id.next).setOnClickListener(v -> {
+            Intent i = new Intent(LoginAct.this, AlertsMenu.class);
+            startActivity(i);
+        });
+
 
         _loginButton = findViewById(R.id.btn_login);
         _loginButton.setOnClickListener(v -> login());
@@ -45,7 +58,6 @@ public class LoginAct extends AppCompatActivity {
 
         this.password = getIntent().getStringExtra("password");
         if(password != null) {
-            Log.d("BRUHH pass: ", String.valueOf(userId));
             _passwordText.setText(password);
         }
 
@@ -62,20 +74,16 @@ public class LoginAct extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginAct.this, R.style.AppTheme_Dark_Dialog);
+        progressDialog = new ProgressDialog(LoginAct.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        // TODO: Implement your own authentication logic here.
-
-        new android.os.Handler().postDelayed(
-                () -> {
-                    // On complete call either onLoginSuccess or onLoginFailed
-                    onLoginSuccess();
-                    // onLoginFailed();
-                    progressDialog.dismiss();
-                }, 3000);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("login_userid", String.valueOf(userId));
+        map.put("login_password", password);
+        HttpPostAsyncTask task = new HttpPostAsyncTask(map, this);
+        task.execute("login");
     }
 
 
@@ -85,24 +93,55 @@ public class LoginAct extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void onLoginSuccess() {
-        cb = findViewById(R.id.checkbox);
-        if(cb.isChecked()) {
-            DbManager.setRow(userId, password);
-        }
-        _loginButton.setEnabled(true);
-        Intent i = new Intent(LoginAct.this, AlertsMenu.class);
-        startActivity(i);
+    public void onLoginSuccess(String sessionId) {
+
+        runOnUiThread(() -> {
+            Config.setLogIn(userId, sessionId);
+            cb = findViewById(R.id.checkbox);
+            if(cb.isChecked()) {
+                DbManager.setRow(userId, password);
+            }
+            _loginButton.setEnabled(true);
+
+            //If first time logged, show tutorial
+            if(getIntent().getBooleanExtra("firstTime", true)) {
+                //Start Intro App Slide
+                DbManager.setNotFirstTime();
+                Intent i = new Intent(LoginAct.this, AppIntroActivity.class);
+                startActivity(i);
+            } else {
+                Intent i = new Intent(LoginAct.this, AlertsMenu.class);
+                startActivity(i);
+            }
+
+        });
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        runOnUiThread(() -> {
+            Toast.makeText(getBaseContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_LONG).show();
+            _loginButton.setEnabled(true);
+            if(progressDialog != null)
+                progressDialog.dismiss();
+        });
 
-        _loginButton.setEnabled(true);
     }
 
     public boolean validate() {
         boolean valid = true;
+
+        if(_userIdText.getText().toString().isEmpty()){
+            _userIdText.setError("enter a valid user id");
+            valid = false;
+        }
+
+        if(_passwordText.getText().toString().isEmpty()){
+            _passwordText.setError("enter a valid password");
+            valid = false;
+        }
+
+        if(!valid)
+            return false;
 
         this.userId = Long.parseLong(_userIdText.getText().toString());
         this.password = _passwordText.getText().toString();

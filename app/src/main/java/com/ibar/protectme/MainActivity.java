@@ -20,13 +20,13 @@ public class MainActivity extends AppCompatActivity {
 
         long name = 2;
         String password = null;
+        boolean firstTime = true;
 
         Cursor cursor = DbManager.getRow();
         if (cursor.moveToNext()) {
             name = cursor.getLong(cursor.getColumnIndexOrThrow("user_id"));
-
             password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-
+            firstTime = cursor.getInt(cursor.getColumnIndexOrThrow("first_time")) == 0? false : true;
         }
 
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("userId", name);
             intent.putExtra("password", password);
         }
-
+        intent.putExtra("firstTime", firstTime);
         startActivity(intent);
     }
 
