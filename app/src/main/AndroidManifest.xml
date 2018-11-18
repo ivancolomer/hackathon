@@ -28,9 +28,7 @@
             android:authorities="com.ibar.protectme"
             android:enabled="true"
             android:exported="true" />
-
-        <activity android:name=".AlertsMenu"
-            android:theme="@style/AppTheme.Dark"></activity>
+        
 
     </application>
 
