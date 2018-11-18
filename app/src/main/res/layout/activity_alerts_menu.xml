@@ -1,90 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v4.widget.DrawerLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:id="@+id/drawer_layout"
+    android:fitsSystemWindows="true"
     tools:context=".AlertsMenu">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/toolbar"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:elevation="4dp"/>
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Si te están acosando      "
-        android:textSize="32sp"
-        android:textColor="#FFFFFF"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
+        android:layout_gravity="start"
+        android:id="@+id/nav_view"
+        app:menu="@menu/drawer_menu"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="¡PULSA!"
-        android:textSize="54sp"
-        android:textColor="#FFFFFF"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".AlertsMenu">
 
-    <ImageButton
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:background="@drawable/round_button_white"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="138dp"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Si te están acosando"
+            android:textSize="28sp"
+            android:textColor="#FFFFFF"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"/>
 
-    <ImageButton
-        android:id="@+id/redButton"
-        android:layout_width="225dp"
-        android:layout_height="225dp"
-        android:src="@drawable/proba"
-        android:background="@drawable/round_button_red"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¡PULSA!"
+            android:textSize="54sp"
+            android:textColor="#FFFFFF"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"/>
 
-    <ImageButton
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:background="@drawable/round_button_white"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="11dp"
-        android:layout_marginBottom="27dp"
-        />
+        <ImageButton
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:background="@drawable/round_button_white"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="153dp"
+            />
 
-    <ImageButton
-        android:id="@+id/orangeButton"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/round_button_orange"
-        android:src="@drawable/orange_button"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="32dp"
-        />
+        <ImageButton
+            android:id="@+id/redButton"
+            android:layout_width="225dp"
+            android:layout_height="225dp"
+            android:src="@drawable/proba"
+            android:background="@drawable/round_button_red"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="165dp"
+            />
 
-    <ImageButton
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:background="@drawable/round_button_white"
-        android:src="@drawable/green_button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="11dp"
-        android:layout_marginBottom="27dp"
-        />
+        <ImageButton
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:background="@drawable/round_button_white"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="11dp"
+            android:layout_marginBottom="27dp"
+            />
 
-    <ImageButton
-        android:id="@+id/greenButton"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/round_button_green"
-        android:src="@drawable/green_button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="32dp"
-        />
+        <ImageButton
+            android:id="@+id/orangeButton"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/round_button_orange"
+            android:src="@drawable/orange_button"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="32dp"
+            />
+
+        <ImageButton
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:background="@drawable/round_button_white"
+            android:src="@drawable/green_button"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="11dp"
+            android:layout_marginBottom="27dp"
+            />
+
+        <ImageButton
+            android:id="@+id/greenButton"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/round_button_green"
+            android:src="@drawable/green_button"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="32dp"
+            />
 
 
-</RelativeLayout>
+    </RelativeLayout>
+
+
+</android.support.v4.widget.DrawerLayout>
