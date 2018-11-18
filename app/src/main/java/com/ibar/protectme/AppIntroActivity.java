@@ -14,21 +14,25 @@ public class AppIntroActivity extends AppIntro {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_app_intro);
+        /*
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        //setContentView(R.layout.activity_app_intro);*/
 
-        addSlide(AppIntroFragment.newInstance("First App Into", "First App Intro Details",
-                R.drawable.one, ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary)));
-        addSlide(AppIntroFragment.newInstance("Second App Into", "Second App Intro Details",
-                R.drawable.two, ContextCompat.getColor(getApplicationContext(), R.color.colorAccent)));
-        addSlide(AppIntroFragment.newInstance("Third App Into", "Third App Intro Details",
-                R.drawable.three, ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark)));
+        addSlide(AppIntroFragment.newInstance("Botón de pánico", "Utiliza este botón cuando temas por tu integridad física.\nSe enviará notificación y tu localización al tutor y se llamará a emergencias.",
+                R.drawable.red_button, ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary)));
+        addSlide(AppIntroFragment.newInstance("Botón naranja", "Este botón es si estás en peligro.\nSe notifica al tutor y envia tu posición.",
+                R.drawable.orange_button_copia, ContextCompat.getColor(getApplicationContext(), R.color.colorAccent)));
+        addSlide(AppIntroFragment.newInstance("Botón verde", "Por si necesitas ayuda o consejos o hablar de forma anónima con un experto.",
+                R.drawable.green_button_copia, ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark)));
     }
 
 
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
-        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent= new Intent(getApplicationContext(), AlertsMenu.class);
         startActivity(intent);
         finish();
     }
@@ -36,7 +40,7 @@ public class AppIntroActivity extends AppIntro {
     @Override
     public void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
-        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent=new Intent(getApplicationContext(), AlertsMenu.class);
         startActivity(intent);
         finish();
     }

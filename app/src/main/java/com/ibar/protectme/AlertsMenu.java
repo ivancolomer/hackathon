@@ -30,15 +30,14 @@ public class AlertsMenu extends AppCompatActivity {
 
 
         findViewById(R.id.redButton).setOnClickListener(view -> redButtonMethod());
-        // findViewById(R.id.logout).setOnClickListener(view ->  logOut());
 
-        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
 
 
 
 
         drawer = findViewById(R.id.drawer_layout);
+//        findViewById(R.id.logout).setOnClickListener(view ->  logOut());
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -100,7 +99,7 @@ public class AlertsMenu extends AppCompatActivity {
     }
 
     private void logOut() {
-        DbManager.removeFromDataBase();
+        //DbManager.removeFromDataBase();
         finish();
     }
 

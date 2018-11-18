@@ -39,13 +39,6 @@ public class LoginAct extends AppCompatActivity {
         setContentView(R.layout.activity_log);
         ButterKnife.bind(this);
 
-
-        findViewById(R.id.next).setOnClickListener(v -> {
-            Intent i = new Intent(LoginAct.this, AlertsMenu.class);
-            startActivity(i);
-        });
-
-
         _loginButton = findViewById(R.id.btn_login);
         _loginButton.setOnClickListener(v -> login());
 

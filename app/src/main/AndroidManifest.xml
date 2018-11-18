@@ -40,7 +40,7 @@
             android:name=".AlertsMenu"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".AppIntroActivity"></activity>
+        <activity android:name=".AppIntroActivity" android:screenOrientation="portrait"></activity>
 
 
     </application>

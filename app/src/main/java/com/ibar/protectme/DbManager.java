@@ -34,7 +34,6 @@ public class DbManager extends ContentProvider {
     public static void removeFromDataBase(){
         String sql = "UPDATE user_info SET user_id = null, password = null;";
         dbHelper.getReadableDatabase().execSQL(sql, new String[] {});
-
     }
     
     @Override
@@ -42,13 +41,11 @@ public class DbManager extends ContentProvider {
         return null;
     }
 
-    
     @Override
     public String getType(@NonNull Uri uri) {
         return null;
     }
 
-    
     @Override
     public Uri insert(@NonNull Uri uri,  ContentValues values) {
         return null;
