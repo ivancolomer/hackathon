@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -13,13 +14,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 public class AlertsMenu extends AppCompatActivity {
     private DrawerLayout drawer;
+    double latitude;
+    double longitude;
+    static Coordinates coord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +33,12 @@ public class AlertsMenu extends AppCompatActivity {
 
 
         findViewById(R.id.redButton).setOnClickListener(view -> redButtonMethod());
+        findViewById(R.id.orangeButton).setOnClickListener(view -> orangeButtonMethod());
 
         getSupportActionBar().setTitle(null);
 
 
-
-
         drawer = findViewById(R.id.drawer_layout);
-//        findViewById(R.id.logout).setOnClickListener(view ->  logOut());
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -54,7 +54,8 @@ public class AlertsMenu extends AppCompatActivity {
         builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                onCall();
+                getLocation(true);
+                //onCall();
             }
         });
 
@@ -64,7 +65,37 @@ public class AlertsMenu extends AppCompatActivity {
             }
         });
         builder.show();
+    }
 
+    private void orangeButtonMethod() {
+        getLocation(false);
+        Toast.makeText(this, "Coordenadas enviadas: {"+String.valueOf(latitude)+", "+String.valueOf(longitude)+"}", Toast.LENGTH_SHORT).show();
+    }
+
+    private void getLocation(boolean redButton) {
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    Integer.parseInt("124"));
+        } else {
+            GPSTracker tracker = new GPSTracker(this);
+            if (!tracker.canGetLocation()) {
+                tracker.showSettingsAlert();
+            } else {
+                latitude = tracker.getLatitude();
+                longitude = tracker.getLongitude();
+                AlertsMenu.coord = new Coordinates(latitude, longitude);
+                Toast.makeText(this, "Coordenadas enviadas: " + AlertsMenu.coord.toString(), Toast.LENGTH_LONG).show();
+
+            }
+            if (redButton)
+                onCall();
+        }
+        int type = redButton? 0 : 1;
+        storeData(type);
 
     }
 
@@ -84,7 +115,6 @@ public class AlertsMenu extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-
             case 123:
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     onCall();
@@ -93,13 +123,32 @@ public class AlertsMenu extends AppCompatActivity {
                 }
                 break;
 
+            case 124:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    getLocation(true);
+                } else {
+                    Log.d("TAG", "Location Permission Not Granted");
+                }
+                break;
+
             default:
                 break;
         }
     }
 
-    private void logOut() {
-        //DbManager.removeFromDataBase();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.logout:
+                logOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void logOut() {
+        DbManager.removeFromDataBase();
         finish();
     }
 
@@ -110,6 +159,12 @@ public class AlertsMenu extends AppCompatActivity {
         }else{
             super.onBackPressed();
         }
+
+    }
+
+    public void storeData(int typeAlert) {
+        double latitude = AlertsMenu.coord.latitude;
+        double longitude = AlertsMenu.coord.longitude;
 
     }
 
