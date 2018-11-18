@@ -99,7 +99,7 @@ public class LoginAct extends AppCompatActivity {
             //If first time logged, show tutorial
             if(getIntent().getBooleanExtra("firstTime", true)) {
                 //Start Intro App Slide
-                //DbManager.setNotFirstTime();
+                DbManager.setNotFirstTime();
                 Intent i = new Intent(LoginAct.this, AppIntroActivity.class);
                 startActivity(i);
             } else {

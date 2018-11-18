@@ -29,11 +29,11 @@ public class DbManager extends ContentProvider {
 
     public static void setNotFirstTime() {
         dbHelper.getReadableDatabase().execSQL("UPDATE user_info SET first_time = ?", new String[]{String.valueOf(0)});
+    }
 
     public static void removeFromDataBase(){
         String sql = "UPDATE user_info SET user_id = null, password = null;";
         dbHelper.getReadableDatabase().execSQL(sql, new String[] {});
-
     }
     
     @Override
@@ -41,13 +41,11 @@ public class DbManager extends ContentProvider {
         return null;
     }
 
-    
     @Override
     public String getType(@NonNull Uri uri) {
         return null;
     }
 
-    
     @Override
     public Uri insert(@NonNull Uri uri,  ContentValues values) {
         return null;
