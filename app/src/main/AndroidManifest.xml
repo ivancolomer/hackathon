@@ -29,10 +29,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity
-            android:name=".LoginAct"
-            android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".AlertsMenu" android:theme="@style/AppTheme.Dark"></activity>
+        <activity android:name=".AlertsMenu"
+            android:theme="@style/AppTheme.Dark"></activity>
 
     </application>
 
