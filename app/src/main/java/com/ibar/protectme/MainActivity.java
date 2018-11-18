@@ -18,13 +18,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = MainActivity.this;
 
-        long name = 0;
+        long name = 2;
         String password = null;
 
         Cursor cursor = DbManager.getRow();
         if (cursor.moveToNext()) {
             name = cursor.getLong(cursor.getColumnIndexOrThrow("user_id"));
+
             password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+
         }
 
 

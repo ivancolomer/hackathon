@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 public class DbManager extends ContentProvider {
     public static DbConector dbHelper;
@@ -16,10 +17,15 @@ public class DbManager extends ContentProvider {
     }
 
     public static Cursor getRow() {
-        String sql = "SELECT * FROM user_info";
+        String sql = "SELECT * FROM user_info;";
         return dbHelper.getReadableDatabase().rawQuery(sql, new String[] {});
     }
 
+    public static void setRow(long userId, String password) {
+        String sql = "UPDATE user_info SET user_id = ?, password = '" + password + "';";
+        Log.d("BRUH DbMan26: ", password);
+        dbHelper.getReadableDatabase().execSQL(sql, new String[]{String.valueOf(userId)});
+    }
     
     @Override
     public Cursor query(@NonNull Uri uri,  String[] projection,  String selection,  String[] selectionArgs,  String sortOrder) {

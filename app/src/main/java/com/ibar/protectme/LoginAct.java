@@ -20,6 +20,9 @@ public class LoginAct extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
     private CheckBox cb;
 
+    private long userId;
+    private String password;
+
     @BindView(R.id.input_email) EditText _userIdText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
@@ -30,34 +33,28 @@ public class LoginAct extends AppCompatActivity {
         setContentView(R.layout.activity_log);
         ButterKnife.bind(this);
 
-        findViewById(R.id.next).setOnClickListener(view ->  goToAlertsMenu());
-
         _loginButton = findViewById(R.id.btn_login);
         _loginButton.setOnClickListener(v -> login());
 
-        long userId = getIntent().getLongExtra("userId", 0);
+        _userIdText = findViewById(R.id.input_email);
+        _passwordText = findViewById(R.id.input_password);
+
+        this.userId = getIntent().getLongExtra("userId", 0);
         if(userId != 0)
             _userIdText.setText(String.valueOf(userId));
 
-        String password = getIntent().getStringExtra("password");
-        if(password != null)
+        this.password = getIntent().getStringExtra("password");
+        if(password != null) {
+            Log.d("BRUHH pass: ", String.valueOf(userId));
             _passwordText.setText(password);
+        }
 
-        Log.d("Login ", String.valueOf(userId));
+
         if(userId > 0 && password != null && !password.isEmpty())
             login();
-
     }
-
-    private void goToAlertsMenu() {
-        Intent intent = new Intent(this, AlertsMenu.class);
-        startActivity(intent);
-    }
-
 
     public void login() {
-        Log.d(TAG, "Login");
-
         if (!validate()) {
             onLoginFailed();
             return;
@@ -65,18 +62,12 @@ public class LoginAct extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginAct.this,
-                R.style.AppTheme_Dark);
+        final ProgressDialog progressDialog = new ProgressDialog(LoginAct.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
         // TODO: Implement your own authentication logic here.
-
-        cb = findViewById(R.id.checkbox);
-        if(cb.isChecked()) {
-
-        }
 
         new android.os.Handler().postDelayed(
                 () -> {
@@ -95,8 +86,13 @@ public class LoginAct extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
+        cb = findViewById(R.id.checkbox);
+        if(cb.isChecked()) {
+            DbManager.setRow(userId, password);
+        }
         _loginButton.setEnabled(true);
-        finish();
+        Intent i = new Intent(LoginAct.this, AlertsMenu.class);
+        startActivity(i);
     }
 
     public void onLoginFailed() {
@@ -108,8 +104,8 @@ public class LoginAct extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        long userId = Long.parseLong(_userIdText.getText().toString());
-        String password = _passwordText.getText().toString();
+        this.userId = Long.parseLong(_userIdText.getText().toString());
+        this.password = _passwordText.getText().toString();
 
         if (userId <= 0) {
             _userIdText.setError("enter a valid user id");
