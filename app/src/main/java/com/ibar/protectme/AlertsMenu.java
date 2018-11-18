@@ -71,7 +71,6 @@ public class AlertsMenu extends AppCompatActivity {
 
     private void orangeButtonMethod() {
         getLocation(false);
-        Toast.makeText(this, "Coordenadas enviadas: {"+String.valueOf(latitude)+", "+String.valueOf(longitude)+"}", Toast.LENGTH_SHORT).show();
     }
 
     private void getLocation(boolean redButton) {
