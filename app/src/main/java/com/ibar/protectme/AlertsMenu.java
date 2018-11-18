@@ -1,6 +1,7 @@
 package com.ibar.protectme;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,9 +11,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 public class AlertsMenu extends AppCompatActivity {
@@ -33,6 +36,8 @@ public class AlertsMenu extends AppCompatActivity {
         getSupportActionBar().setTitle(null);
 
 
+
+
         drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -42,7 +47,25 @@ public class AlertsMenu extends AppCompatActivity {
     }
 
     private void redButtonMethod() {
-        onCall();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("¡Atención!");
+        builder.setMessage("¿Realmente está en juego tu integridad física?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                onCall();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
+
 
     }
 
@@ -90,4 +113,5 @@ public class AlertsMenu extends AppCompatActivity {
         }
 
     }
+
 }
