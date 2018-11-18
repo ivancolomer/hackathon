@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 public class AlertsMenu extends AppCompatActivity {
     private DrawerLayout drawer;
     double latitude;
@@ -88,14 +90,15 @@ public class AlertsMenu extends AppCompatActivity {
                 latitude = tracker.getLatitude();
                 longitude = tracker.getLongitude();
                 AlertsMenu.coord = new Coordinates(latitude, longitude);
+                int type = redButton? 0 : 1;
+                storeData(type);
                 Toast.makeText(this, "Coordenadas enviadas: " + AlertsMenu.coord.toString(), Toast.LENGTH_LONG).show();
 
             }
             if (redButton)
                 onCall();
         }
-        int type = redButton? 0 : 1;
-        storeData(type);
+
 
     }
 
@@ -165,6 +168,14 @@ public class AlertsMenu extends AppCompatActivity {
     public void storeData(int typeAlert) {
         double latitude = AlertsMenu.coord.latitude;
         double longitude = AlertsMenu.coord.longitude;
+
+        HashMap<String, String> map = new HashMap<>();
+        Config.putLogInParameters(map);
+        map.put("alert_type", String.valueOf(typeAlert));
+        map.put("alert_lat", String.valueOf(latitude));
+        map.put("alert_lon", String.valueOf(longitude));
+        HttpPostAsyncTask2 task = new HttpPostAsyncTask2(map);
+        task.execute("internal/createalert");
 
     }
 
