@@ -32,8 +32,9 @@
         <activity android:name=".AlertsMenu"
             android:theme="@style/AppTheme.Dark"></activity>
 
+
     </application>
 
-
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
 </manifest>

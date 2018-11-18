@@ -20,6 +20,10 @@ public class DbManager extends ContentProvider {
         return dbHelper.getReadableDatabase().rawQuery(sql, new String[] {});
     }
 
+    public static void removeFromDataBase(){
+        String sql = "UPDATE user_info SET user_id = null, password = null;";
+        dbHelper.getReadableDatabase().execSQL(sql, new String[] {});
+    }
     
     @Override
     public Cursor query(@NonNull Uri uri,  String[] projection,  String selection,  String[] selectionArgs,  String sortOrder) {
