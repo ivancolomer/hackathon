@@ -174,7 +174,7 @@ public class AlertsMenu extends AppCompatActivity {
         map.put("alert_lat", String.valueOf(latitude));
         map.put("alert_lon", String.valueOf(longitude));
         HttpPostAsyncTask2 task = new HttpPostAsyncTask2(map);
-        task.execute("internal/createalert");
+        task.execute("internal/create/");
 
     }
 
